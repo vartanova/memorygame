@@ -1,5 +1,15 @@
+import image1 from "../assets/catHmm.webp"
+import image2 from "../assets/catEyes.webp"
+import image3 from "../assets/catMouse.jpg"
+import image4 from "../assets/catRose.jpg"
+import image5 from "../assets/catBoo.webp"
+import image6 from "../assets/catHuh.jpg"
+import image7 from "../assets/catLoading.webp"
+import image8 from "../assets/catCute.png"
 
 export const NUM_IMAGES = 8;
+
+const images = [image1, image2, image3, image4, image5, image6, image7, image8, image1]
 
 export const generateCardSet = () => {
     const cards = [];
@@ -7,14 +17,14 @@ export const generateCardSet = () => {
     for (let i = 1; i <= NUM_IMAGES; i++) {
         const card1 = {
             id: id,
-            image: i,
+            image: images[i],
             imageUp: false,
             matched: false
         };
         id++;
         const card2 = {
             id: id,
-            image: i,
+            image: images[i],
             imageUp: false,
             matched: false
         };

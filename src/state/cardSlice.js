@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { generateCardSet } from "./cardFunctions";
-import shuffleArray from "shuffle-array";
+import {
+  cardsHaveIdenticalImages,
+  generateCardSet,
+  getCard,
+  NUM_IMAGES,
+} from "./cardFunctions";
+import shuffle from "shuffle-array";
 
 const cardSlice = createSlice({
   name: "cards",
@@ -14,22 +19,18 @@ const cardSlice = createSlice({
     // считаем сколько пар найдено. Когда pairsFound === NUM_IMAGES, то игра закончена
     pairsFound: 0,
     gameComplete: false,
-    cards: generateCardSet(),
+    cards: shuffle([...generateCardSet()]),
   },
   reducers: {
-    shuffleCard(state, action) {
-      state.cards = shuffleArray([...state.cards]);
-    },
-
     flipUpCard(state, action) {
       const id = action.payload;
-      if (numberClicksInTurn === 0) {
+      if (state.numberClicksInTurn === 0) {
         state.firstId = id;
       }
-      if (numberClicksInTurn === 1) {
+      if (state.numberClicksInTurn === 1) {
         state.secondId = id;
       }
-      if (numberClicksInTurn === 2) {
+      if (state.numberClicksInTurn === 2) {
         cardSlice.caseReducers.checkMatchedPair(state);
         cardSlice.caseReducers.flipUpCard(state, { payload: id });
         return;
@@ -47,31 +48,59 @@ const cardSlice = createSlice({
     markPairAsMatched(state, action) {
       const { id1, id2 } = action.payload;
 
-      state.cards.map((c) => {
+      state.cards.forEach((c) => {
         if (c.id === id1 || c.id === id2) {
-          return { ...c, matched: true };
+          c.matched = true;
         }
-        return c;
       });
     },
+
     flipDown(state, action) {
       const { id1, id2 } = action.payload;
 
-      state.cards.map((c) => {
+      state.cards.forEach((c) => {
         if (c.id === id1 || c.id === id2) {
-          return { ...c, imageUp: false };
+          c.imageUp = false;
         }
-        return c;
       });
     },
+
     // основная логика игры:
-    checkMatchedPair(state, action) {},
-    initGame(state, action) {},
+    checkMatchedPair(state) {
+      if (
+        state.numberClicksInTurn === 2 &&
+        cardsHaveIdenticalImages(state.firstId, state.secondId, state.cards)
+      ) {
+        state.pairsFound += 1;
+        cardSlice.caseReducers.markPairAsMatched(state, {
+          payload: { id1: state.firstId, id2: state.secondId },
+        });
+      }
+      if (state.pairsFound === NUM_IMAGES) state.gameComplete = true;
+      else {
+        cardSlice.caseReducers.flipDown(state, {
+          payload: { id1: state.firstId, id2: state.secondId },
+        });
+      }
+
+      state.numberClicksInTurn = 0;
+      state.turnNumber += 1;
+    },
+
+    initGame(state) {
+      const newCards = generateCardSet();
+      (state.turnNumber = 1),
+        (state.numberClicksInTurn = 0),
+        (state.firstId = undefined),
+        (state.secondId = undefined),
+        (state.pairsFound = 0),
+        (state.gameComplete = false),
+        (state.cards = shuffle([...newCards]));
+    },
   },
 });
 
 export const {
-  shuffleCard,
   flipUpCard,
   markPairAsMatched,
   flipDown,
