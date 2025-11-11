@@ -3,8 +3,6 @@ import MainPage from "./pages/mainPage";
 import GamePage from "./pages/GamePage";
 import StatisticPage from "./pages/StatisticPage";
 import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
-import reducer from "./state/reducer";
 import { store } from "./state/store";
 
 function App() {

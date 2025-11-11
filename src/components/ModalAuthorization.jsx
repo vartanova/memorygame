@@ -1,9 +1,14 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { shuffleCard } from "../state/cardSlice";
 
 const ModalAuthorization = ({ setIsOpen, isOpen }) => {
   const navigate = useNavigate();
   const [name, setName] = useState("")
+
+  const dispatch = useDispatch(shuffleCard());
+
   return (
     <>
       <div
