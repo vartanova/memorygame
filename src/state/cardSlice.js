@@ -20,8 +20,14 @@ const cardSlice = createSlice({
     pairsFound: 0,
     gameComplete: false,
     cards: shuffle([...generateCardSet()]),
+    history: [],
+    playerName: "",
   },
   reducers: {
+    playerGame(state, action) {
+      state.playerName = action.payload;
+    },
+
     flipUpCard(state, action) {
       const id = action.payload;
       if (state.numberClicksInTurn === 0) {
@@ -43,6 +49,11 @@ const cardSlice = createSlice({
 
       const cardToFlip = state.cards.find((c) => c.id === id);
       if (cardToFlip) cardToFlip.imageUp = true;
+      state.history.push({
+        move: state.turnNumber,
+        pickedItem: cardToFlip.image,
+        points: state.pairsFound,
+      });
     },
 
     markPairAsMatched(state, action) {
@@ -106,6 +117,7 @@ export const {
   flipDown,
   checkMatchedPair,
   initGame,
+  playerGame,
 } = cardSlice.actions;
 
 export default cardSlice.reducer;

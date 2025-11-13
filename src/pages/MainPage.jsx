@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "../components/Modal";
+import { useDispatch } from "react-redux";
+import { playerGame } from "../state/cardSlice";
 
 const MainPage = ({isOpen, setIsOpen}) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const [name, setName] = useState("");
 
   const handleStartGame = () => {
     navigate("/game")
     setIsOpen(false)
+    dispatch(playerGame(name))
   }
 
   return (
@@ -33,6 +38,7 @@ const MainPage = ({isOpen, setIsOpen}) => {
           <input
             type="text"
             name="name"
+            value={name}
             onChange={(e) => setName(e.target.value)}
             className="hover:cursor-pointer outline-none w-full border-b-2 py-3.5 pb-0"
           />
