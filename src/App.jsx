@@ -1,5 +1,5 @@
 import { Route, Routes, HashRouter } from "react-router-dom";
-import MainPage from "./pages/mainPage";
+import MainPage from "./pages/MainPage";
 import GamePage from "./pages/GamePage";
 import StatisticPage from "./pages/StatisticPage";
 import { Provider } from "react-redux";
@@ -15,7 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage isOpen={isOpen} setIsOpen={setIsOpen}/>} />
           <Route path="/game" element={<GamePage isOpen={isOpen} setIsOpen={setIsOpen}/>} />
-          <Route path="/statistic" element={<StatisticPage />} />
+          <Route path="/statistic" element={<StatisticPage setIsOpen={setIsOpen}/>} />
         </Routes>
       </HashRouter>
     </Provider>

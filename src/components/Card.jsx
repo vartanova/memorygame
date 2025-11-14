@@ -1,17 +1,14 @@
 import React from "react";
 import cardBack from "../assets/cardBack.jpg";
 
-
-const Card = ({ key, id, image, imageUp, matched, onClick }) => {
+const Card = ({ id, image, imageUp, matched, onClick }) => {
   return (
     <div
       className="w-30 h-30 cursor-pointer"
       onClick={() => onClick(id)}
-      // onClick={onClick}
-
     >
       <div
-        className="relative h-full transition-transform duration-500"
+        className="relative h-full transition-transform duration-500 rounded-lg shadow-md"
         style={{
           transformStyle: "preserve-3d",
           transform: imageUp || matched ? "rotateY(180deg)" : "rotateY(0deg)",

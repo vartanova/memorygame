@@ -1,7 +1,7 @@
   import React from "react";
   import Card from "../components/Card";
   import { useDispatch, useSelector } from "react-redux";
-  import { checkMatchedPair, flipUpCard, initGame } from "../state/cardSlice";
+  import { checkMatchedPair, flipUpCard } from "../state/cardSlice";
   import Modal from "../components/Modal";
   import { useNavigate } from "react-router-dom";
   import ResetGame from "../components/ResetGame";
@@ -17,7 +17,7 @@
     const numberClicksInTurn = useSelector(
       (state) => state.cards.numberClicksInTurn
     );
-    const playerGame = useSelector((state) => state.cards.playerGame)
+    const playerName = useSelector((state) => state.cards.playerName)
 
     if (pairsFound === 7 && numberClicksInTurn === 2) {
       dispatch(checkMatchedPair());
@@ -47,19 +47,14 @@
       setIsOpen(true);
     }
 
-    const handleNewGame = () => {
-      dispatch(initGame());
-      setIsOpen(false);
-    };
-
     return (
-      <div className="flex flex-col gap-10 pt-10 justify-center">
-        <div className="flex gap-5 justify-center">
-          <div>
-            <p>user name:</p>
-            {playerGame}
+      <div className="flex flex-col gap-10 pt-10 justify-center bg-gradient-to-tr from-[#14366f] via-[#d7ede1] to-[#14366f] min-h-screen">
+        <div className="flex gap-10 justify-center text-[#14366f]">
+          <div className="flex gap-3 font-bold uppercase">
+            <p >user name:</p>
+            {playerName}
           </div>
-          <div className="flex gap-2.5">
+          <div className="flex gap-2.5 font-bold uppercase">
             <p>current points:</p>
             {pairsFound}
           </div>
@@ -69,13 +64,13 @@
         </div>
         {isOpen && (
           <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-            <h1 className="text-5xl">Игра завершена!</h1>
+            <h1 className="text-5xl text-[#14366f] font-bold">Игра завершена!</h1>
             <div className="flex gap-5 justify-between">
               <ResetGame setIsOpen={setIsOpen}/>
               <button
                 onClick={() => navigate("/statistic")}
                 type="button"
-                className="bg-[#b7e3f5] py-2 px-3 rounded-2xl hover:shadow-md hover:cursor-pointer"
+                className="bg-[#14366f] text-white py-2 px-3 rounded-2xl hover:shadow-md hover:cursor-pointer"
               >
                 Посмотреть статистику
               </button>

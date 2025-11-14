@@ -3,23 +3,21 @@ import { useDispatch } from "react-redux";
 import { initGame } from "../state/cardSlice";
 import { useNavigate } from "react-router-dom";
 
-
-const ResetGame = ({setIsOpen}) => {
+const ResetGame = ({ setIsOpen }) => {
   const dispatch = useDispatch();
-    const navigate = useNavigate();
-
+  const navigate = useNavigate();
 
   const handleNewGame = () => {
-    dispatch(initGame());
     setIsOpen(false);
-    navigate("/game")
+    navigate("/game");
+    dispatch(initGame());
   };
   return (
     <div>
       <button
         onClick={() => handleNewGame()}
         type="button"
-        className="bg-[#b7e3f5] w-full py-2 px-3 rounded-2xl hover:shadow-md hover:cursor-pointer"
+        className="bg-[#14366f] text-white w-full py-2 px-3 rounded-2xl hover:shadow-md hover:cursor-pointer"
       >
         Начать заново
       </button>

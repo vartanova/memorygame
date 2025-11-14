@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import {
   useReactTable,
@@ -7,9 +7,9 @@ import {
 } from "@tanstack/react-table";
 import ResetGame from "../components/ResetGame";
 
-const StatisticPage = () => {
+const StatisticPage = ({ setIsOpen }) => {
   const history = useSelector((state) => state.cards.history || []);
-  const playerGame = useSelector((state) => state.cards.playerGame);
+  const playerName = useSelector((state) => state.cards.playerName);
 
   const table = useReactTable({
     data: history,
@@ -23,34 +23,42 @@ const StatisticPage = () => {
   });
 
   return (
-    <div className="flex flex-col items-center gap-5 pt-10 pb-10">
-      <div className="flex flex-col items-center gap-5 pt-10 pb-10">
-        <h1 className="text-3xl">Game History</h1>
-        <p>name user: </p>
-        {playerGame}
-        <ResetGame />
+    <div
+      className="flex flex-col items-center gap-5 pt-10 pb-10 min-h-screen text-[#14366f]"
+      style={{
+        background:
+          "radial-gradient(125% 125% at 50% 10%, #d7ede1 30%, #14366f 100%)",
+      }}
+    >
+      <div className="flex flex-col items-center gap-5">
+        <h1 className="text-5xl font-bold">Game History</h1>
+        <div className="flex gap-3 font-bold uppercase">
+          <p>name user: </p>
+          {playerName}
+        </div>
+        <ResetGame setIsOpen={setIsOpen} />
       </div>
 
-      <table className="border-collapse border w-[600px] text-center">
+      <table className="border-collapse w-[600px] text-center bg-white rounded-2xl">
         <thead>
           <tr>
-            <th className="border py-2">Move count</th>
-            <th className="border py-2">Picked Item</th>
-            <th className="border py-2">Points</th>
+            <th className=" py-2">Move count</th>
+            <th className=" py-2">Picked Item</th>
+            <th className=" py-2">Points</th>
           </tr>
         </thead>
 
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              <td className="border">{row.original.move}</td>
-              <td className="border py-2 flex justify-center">
+            <tr key={row.id} className="border-t">
+              <td className="">{row.original.move}</td>
+              <td className=" py-2 flex justify-center">
                 <img
                   src={row.original.pickedItem}
                   className="w-15 h-15 object-cover rounded-md shadow-md"
                 />
               </td>
-              <td className="border py-2">{row.original.points}</td>
+              <td className=" py-2">{row.original.points}</td>
             </tr>
           ))}
         </tbody>
@@ -58,9 +66,16 @@ const StatisticPage = () => {
 
       <div className="flex items-center gap-4 mt-6">
         <button
+          onClick={() => table.setPageIndex(0)}
+          className="bg-[#14366f] text-white px-3 py-1 rounded-xl cursor-pointer hover:shadow-md"
+        >
+          first page
+        </button>
+
+        <button
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
-          className="bg-[#b7e3f5] px-3 py-1 rounded disabled:opacity-70 cursor-pointer hover:shadow-md"
+          className="bg-[#14366f] text-white px-3 py-1 rounded-xl disabled:opacity-70 cursor-pointer hover:shadow-md"
         >
           &lt; previous
         </button>
@@ -73,9 +88,16 @@ const StatisticPage = () => {
         <button
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
-          className="bg-[#b7e3f5] px-3 py-1 rounded disabled:opacity-70 cursor-pointer hover:shadow-md"
+          className="bg-[#14366f] text-white px-3 py-1 rounded-xl disabled:opacity-70 cursor-pointer hover:shadow-md"
         >
           next &gt;
+        </button>
+
+        <button
+          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+          className="bg-[#14366f] text-white px-3 py-1 rounded-xl cursor-pointer hover:shadow-md"
+        >
+          last page
         </button>
       </div>
     </div>

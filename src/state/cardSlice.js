@@ -24,7 +24,7 @@ const cardSlice = createSlice({
     playerName: "",
   },
   reducers: {
-    playerGame(state, action) {
+    setPlayerName(state, action) {
       state.playerName = action.payload;
     },
 
@@ -106,7 +106,8 @@ const cardSlice = createSlice({
         (state.secondId = undefined),
         (state.pairsFound = 0),
         (state.gameComplete = false),
-        (state.cards = shuffle([...newCards]));
+        (state.cards = shuffle([...newCards])),
+        (state.history = []);
     },
   },
 });
@@ -117,7 +118,7 @@ export const {
   flipDown,
   checkMatchedPair,
   initGame,
-  playerGame,
+  setPlayerName,
 } = cardSlice.actions;
 
 export default cardSlice.reducer;
