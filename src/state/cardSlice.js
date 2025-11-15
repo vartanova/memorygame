@@ -3,7 +3,6 @@ import {
   cardsHaveIdenticalImages,
   generateCardSet,
   getCard,
-  NUM_IMAGES,
 } from "./cardFunctions";
 import shuffle from "shuffle-array";
 
@@ -16,14 +15,19 @@ const cardSlice = createSlice({
     // записываем id карт на которые кликаем
     firstId: undefined,
     secondId: undefined,
-    // считаем сколько пар найдено. Когда pairsFound === NUM_IMAGES, то игра закончена
+    // считаем сколько пар найдено. Когда pairsFound === numberOfCards, то игра закончена
     pairsFound: 0,
     gameComplete: false,
-    cards: shuffle([...generateCardSet()]),
+    cards: shuffle([...generateCardSet(8)]),
     history: [],
     playerName: "",
+    numberOfCards: 8,
   },
   reducers: {
+    setNumberOfCards(state, action) {
+      state.numberOfCards = action.payload;
+    },
+
     setPlayerName(state, action) {
       state.playerName = action.payload;
     },
@@ -44,7 +48,7 @@ const cardSlice = createSlice({
 
       state.numberClicksInTurn += 1;
 
-      const card = getCard(id, state.cards);
+      const card = getCard(id, state.cards, state.numberOfCards);
       if (card.imageUp || card.matched) return;
 
       const cardToFlip = state.cards.find((c) => c.id === id);
@@ -80,14 +84,14 @@ const cardSlice = createSlice({
     checkMatchedPair(state) {
       if (
         state.numberClicksInTurn === 2 &&
-        cardsHaveIdenticalImages(state.firstId, state.secondId, state.cards)
+        cardsHaveIdenticalImages(state.firstId, state.secondId, state.cards, state.numberOfCards)
       ) {
         state.pairsFound += 1;
         cardSlice.caseReducers.markPairAsMatched(state, {
           payload: { id1: state.firstId, id2: state.secondId },
         });
       }
-      if (state.pairsFound === NUM_IMAGES) state.gameComplete = true;
+      if (state.pairsFound === state.numberOfCards) state.gameComplete = true;
       else {
         cardSlice.caseReducers.flipDown(state, {
           payload: { id1: state.firstId, id2: state.secondId },
@@ -99,7 +103,7 @@ const cardSlice = createSlice({
     },
 
     initGame(state) {
-      const newCards = generateCardSet();
+      const newCards = generateCardSet(state.numberOfCards);
       (state.turnNumber = 1),
         (state.numberClicksInTurn = 0),
         (state.firstId = undefined),
@@ -107,7 +111,7 @@ const cardSlice = createSlice({
         (state.pairsFound = 0),
         (state.gameComplete = false),
         (state.cards = shuffle([...newCards])),
-        (state.history = []);
+        (state.history = [])
     },
   },
 });
@@ -119,6 +123,7 @@ export const {
   checkMatchedPair,
   initGame,
   setPlayerName,
+  setNumberOfCards,
 } = cardSlice.actions;
 
 export default cardSlice.reducer;

@@ -4,7 +4,7 @@ import cardBack from "../assets/cardBack.jpg";
 const Card = ({ id, image, imageUp, matched, onClick }) => {
   return (
     <div
-      className="w-30 h-30 cursor-pointer"
+      className="w-20 h-20 cursor-pointer"
       onClick={() => onClick(id)}
     >
       <div
