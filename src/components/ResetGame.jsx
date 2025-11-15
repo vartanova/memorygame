@@ -19,7 +19,7 @@ const ResetGame = ({ setIsOpen }) => {
         type="button"
         className="bg-[#14366f] text-white w-full py-2 px-3 rounded-2xl hover:shadow-md hover:cursor-pointer"
       >
-        Начать заново
+        Start over
       </button>
     </div>
   );

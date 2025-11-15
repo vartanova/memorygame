@@ -64,7 +64,7 @@
         </div>
         {isOpen && (
           <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-            <h1 className="text-5xl text-[#14366f] font-bold">Игра завершена!</h1>
+            <h1 className="text-5xl text-[#14366f] font-bold">Game is over!</h1>
             <div className="flex gap-5 justify-between">
               <ResetGame setIsOpen={setIsOpen}/>
               <button
@@ -72,7 +72,7 @@
                 type="button"
                 className="bg-[#14366f] text-white py-2 px-3 rounded-2xl hover:shadow-md hover:cursor-pointer"
               >
-                Посмотреть статистику
+                View statistic
               </button>
             </div>
           </Modal>
